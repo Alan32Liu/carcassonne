@@ -12,9 +12,9 @@ class FarmerConnection:
 
     def to_json(self):
         return {
-            "farmer_position": self.farmer_positions.to_json(),
-            "tile_connections": self.tile_connections.to_json(),
-            "city_sides": self.city_sides.to_json()
+            "farmer_position": [farmer_position.to_json() for farmer_position in self.farmer_positions],
+            "tile_connections": [tile_connection.to_json() for tile_connection in self.tile_connections],
+            "city_sides": [city_side.to_json() for city_side in self.city_sides]
         }
 
     def __str__(self):
