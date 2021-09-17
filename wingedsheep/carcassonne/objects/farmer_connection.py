@@ -20,10 +20,11 @@ class FarmerConnection:
     def __str__(self):
         return json.dumps(self.to_json(), indent=2)
 
-    def __eq__(self, other):
-        return self.farmer_positions == other.farmer_positions \
-               and self.tile_connections == other.tile_connections \
-               and self.city_sides == other.city_sides
+    def __eq__(self, other: 'FarmerConnection'):
+        return isinstance(other, FarmerConnection) and \
+               self.farmer_positions == other.farmer_positions and \
+               self.tile_connections == other.tile_connections and \
+               self.city_sides == other.city_sides
 
     def __hash__(self):
         return hash((tuple(self.farmer_positions), tuple(self.tile_connections), tuple(self.city_sides)))

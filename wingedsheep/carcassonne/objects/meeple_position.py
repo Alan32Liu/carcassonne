@@ -7,8 +7,10 @@ class MeeplePosition:
         self.meeple_type = meeple_type
         self.coordinate_with_side = coordinate_with_side
 
-    def __eq__(self, other):
-        return self.meeple_type == other.meeple_type and self.coordinate_with_side == other.coordinate_with_side
+    def __eq__(self, other: 'MeeplePosition'):
+        return isinstance(other, MeeplePosition) and \
+               self.meeple_type == other.meeple_type and \
+               self.coordinate_with_side == other.coordinate_with_side
 
     def __hash__(self):
         return hash((self.meeple_type, self.coordinate_with_side))

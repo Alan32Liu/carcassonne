@@ -94,7 +94,7 @@ class Tile:
             "description": self.description,
             "river": list(map(lambda x: x.to_json(), self.river)),
             "road": list(map(lambda x: x.to_json(), self.road)),
-            "city": list(map(lambda x: x.to_json(), self.city)),
+            # "city": list(map(lambda x: [y for y .to_json(), self.city)),
             "grass": list(map(lambda x: x.to_json(), self.grass)),
             "farms": list(map(lambda x: x.to_json(), self.farms)),
             "shield": self.shield,
@@ -103,6 +103,23 @@ class Tile:
             "inn": list(map(lambda x: x.to_json(), self.inn)),
             "unplayable_sides": list(map(lambda x: x.to_json(), self.unplayable_sides))
         }
+
+    def __eq__(self, other: 'Tile'):
+        return isinstance(other, Tile) and \
+               self.description == other.description and \
+               self.river == other.river and \
+               self.road == other.road and \
+               self.city == other.city and \
+               self.grass == other.grass and \
+               self.farms == other.farms and \
+               self.shield == other.shield and \
+               self.chapel == other.chapel and \
+               self.flowers == other.flowers and \
+               self.inn == other.inn and \
+               self.unplayable_sides == other.unplayable_sides
+
+    def __hash__(self):
+        return hash(self.__dict__.values())
 
     def __str__(self):
         return json.dumps(self.to_json(), indent=2)

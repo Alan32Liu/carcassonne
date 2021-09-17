@@ -16,3 +16,8 @@ class PlayingPosition:
 
     def __str__(self):
         return json.dumps(self.to_json(), indent=2)
+
+    def __eq__(self, other: 'PlayingPosition'):
+        return isinstance(other, PlayingPosition) and \
+               self.coordinate == other.coordinate and \
+               self.turns == other.turns

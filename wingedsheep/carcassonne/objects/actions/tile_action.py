@@ -8,3 +8,9 @@ class TileAction(Action):
         self.tile = tile
         self.coordinate = coordinate
         self.tile_rotations = tile_rotations
+
+    def __eq__(self, other: 'TileAction'):
+        return isinstance(other, TileAction) and \
+               self.tile == other.tile and\
+               self.coordinate == other.coordinate and \
+               self.tile_rotations == other.tile_rotations

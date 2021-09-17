@@ -8,8 +8,10 @@ class CoordinateWithSide:
         self.coordinate = coordinate
         self.side = side
 
-    def __eq__(self, other):
-        return self.coordinate == other.coordinate and self.side == other.side
+    def __eq__(self, other: 'CoordinateWithSide'):
+        return isinstance(other, CoordinateWithSide) and \
+               self.coordinate == other.coordinate and \
+               self.side == other.side
 
     def __hash__(self):
         return hash((self.coordinate, self.side))

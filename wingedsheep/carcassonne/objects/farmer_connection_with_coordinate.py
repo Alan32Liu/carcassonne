@@ -7,9 +7,10 @@ class FarmerConnectionWithCoordinate:
         self.farmer_connection: FarmerConnection = farmer_connection
         self.coordinate: Coordinate = coordinate
 
-    def __eq__(self, other):
-        return self.farmer_connection == other.farmer_connection \
-               and self.coordinate == other.coordinate
+    def __eq__(self, other: 'FarmerConnectionWithCoordinate'):
+        return isinstance(other, FarmerConnectionWithCoordinate) and \
+               self.farmer_connection == other.farmer_connection and \
+               self.coordinate == other.coordinate
 
     def __hash__(self):
         return hash((self.farmer_connection, self.coordinate))
