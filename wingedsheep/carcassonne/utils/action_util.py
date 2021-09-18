@@ -13,11 +13,13 @@ class ActionUtil:
     def get_possible_actions(state: CarcassonneGameState):
         actions: [Action] = []
         if state.phase == GamePhase.TILES:
+            tile_to_play = state.next_tile
             possible_playing_positions: [PlayingPosition] = TilePositionFinder.possible_playing_positions(
                 game_state=state,
-                tile_to_play=state.next_tile
+                tile_to_play=tile_to_play
             )
             if len(possible_playing_positions) == 0:
+                assert tile_to_play
                 actions.append(PassAction())
             else:
                 playing_position: PlayingPosition
