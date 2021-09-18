@@ -6,3 +6,6 @@ class PassAction(Action):
 
     def __eq__(self, other: 'PassAction'):
         return isinstance(other, PassAction)
+
+    def __str__(self):
+        return "Pass"

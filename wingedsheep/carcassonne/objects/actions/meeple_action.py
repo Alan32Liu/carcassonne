@@ -14,3 +14,6 @@ class MeepleAction(Action):
                self.meeple_type == other.meeple_type and \
                self.coordinate_with_side == other.coordinate_with_side and \
                self.remove == other.remove
+
+    def __str__(self):
+        return f"{self.meeple_type:<6} {self.coordinate_with_side} {self.remove}"

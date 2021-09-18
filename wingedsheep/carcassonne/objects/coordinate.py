@@ -11,3 +11,6 @@ class Coordinate:
 
     def __hash__(self):
         return hash((self.row, self.column))
+
+    def __str__(self):
+        return f"({self.row:03}, {self.column:03})"
