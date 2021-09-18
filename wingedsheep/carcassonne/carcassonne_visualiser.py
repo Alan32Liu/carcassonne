@@ -16,6 +16,7 @@ class CarcassonneVisualiser:
         MeepleType.NORMAL: ["blue_meeple.png", "red_meeple.png", "black_meeple.png", "yellow_meeple.png", "green_meeple.png", "pink_meeple.png"],
         MeepleType.ABBOT: ["blue_abbot.png", "red_abbot.png", "black_abbot.png", "yellow_abbot.png", "green_abbot.png", "pink_abbot.png"]
     }
+    player_colour = ["blue", "red", "black", "yellow", "green", "pink"]
     tile_size = 60
     meeple_size = 15
     big_meeple_size = 25
@@ -58,7 +59,7 @@ class CarcassonneVisualiser:
             for column_index, tile in enumerate(row):
                 tile: Tile
                 if tile is not None:
-                    self.__draw_tile(column_index, row_index, tile)
+                    self.__draw_tile(column_index, row_index, tile, game_state.current_player)
 
         for player, placed_meeples in enumerate(game_state.placed_meeples):
             meeple_position: MeeplePosition
@@ -84,9 +85,10 @@ class CarcassonneVisualiser:
             image=image
         )
 
-    def __draw_tile(self, column_index, row_index, tile):
+    def __draw_tile(self, column_index, row_index, tile, player_index):
         image_filename = tile.image
-        reference = f"{image_filename}_{str(tile.turns)}"
+        reference = f"{image_filename}_{str(tile.turns)}_{row_index}_{column_index}"
+        photo_image: PhotoImage
         if reference in self.tile_image_refs:
             photo_image = self.tile_image_refs[reference]
         else:
@@ -98,9 +100,16 @@ class CarcassonneVisualiser:
             crop_width = max(0, width - height) / 2
             crop_height = max(0, height - width) / 2
             image.crop((crop_width, crop_height, crop_width, crop_height))
-            photo_image = ImageTk.PhotoImage(image)
-        self.tile_image_refs[f"{image_filename}_{str(tile.turns)}"] = photo_image
-        self.canvas.create_image(column_index * self.tile_size, row_index * self.tile_size, anchor=NW, image=photo_image)
+            player_colour = Image.new("RGBA", (image.width, image.height), color=self.player_colour[player_index])
+            image_player: Image = Image.blend(image, player_colour, alpha=0.3)
+            photo_image = ImageTk.PhotoImage(image_player)
+            self.tile_image_refs[reference] = photo_image
+
+        self.canvas.create_image(
+            column_index * self.tile_size,
+            row_index * self.tile_size,
+            anchor=NW,
+            image=photo_image)
 
     def __get_meeple_image(self, player: int, meeple_type: MeepleType):
         reference = f"{str(player)}_{str(meeple_type)}"
