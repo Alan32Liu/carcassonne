@@ -160,8 +160,9 @@ class PointsCollector:
     @staticmethod
     def chapel_or_flowers_points(game_state: CarcassonneGameState, coordinate: Coordinate):
         points = 0
-        for row in range(coordinate.row - 1, coordinate.row + 2):
-            for column in range(coordinate.column - 1, coordinate.column + 2):
+        max_row, max_column = game_state.board_size
+        for row in range(max(coordinate.row - 1, 0), min(coordinate.row + 2, max_row)):
+            for column in range(max(coordinate.column - 1, 0), min(coordinate.column + 2, max_column)):
                 tile: Tile = game_state.board[row][column]
                 if tile is not None:
                     points += 1
