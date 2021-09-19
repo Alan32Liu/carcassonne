@@ -27,7 +27,7 @@ class StateUpdater:
         game_state.board[tile_action.coordinate.row][tile_action.coordinate.column] = tile_action.tile
         game_state.phase = GamePhase.MEEPLES
         game_state.last_river_rotation = RiverRotationUtil.get_river_rotation(game_state=game_state,
-                                                                              tile=tile_action.tile)
+                                                                              this_tile_action=tile_action)
         game_state.last_tile_action = tile_action
         return game_state
 

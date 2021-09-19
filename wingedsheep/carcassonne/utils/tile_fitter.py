@@ -1,5 +1,3 @@
-from typing import Set
-
 from wingedsheep.carcassonne.carcassonne_game_state import CarcassonneGameState
 from wingedsheep.carcassonne.objects.rotation import Rotation
 from wingedsheep.carcassonne.objects.side import Side
@@ -89,13 +87,12 @@ class TileFitter:
         if connected_side is None:
             return False
 
-        if unconnected_side is not None and game_state.last_river_rotation is not Rotation.NONE and game_state.last_tile_action is not None:
-            last_played_tile: Tile = game_state.last_tile_action.tile
-            last_played_river_ends: Set[Side] = last_played_tile.get_river_ends()
-            river_ends: Set[Side] = {connected_side, unconnected_side}
-
-            rotation: Rotation = RiverRotationUtil.get_river_rotation_ends(previous_river_ends=last_played_river_ends,
-                                                                           river_ends=river_ends)
+        if unconnected_side is not None and \
+                game_state.last_river_rotation is not Rotation.NONE and \
+                game_state.last_tile_action is not None:
+            rotation: Rotation = RiverRotationUtil.get_river_rotation_ends(
+                connecting_side=connected_side,
+                non_connecting_side=unconnected_side)
             if rotation == game_state.last_river_rotation:
                 return False
 
