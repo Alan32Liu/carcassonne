@@ -24,7 +24,9 @@ class CarcassonneGame:
         self.visualiser = CarcassonneVisualiser()
 
     def reset(self):
-        self.state = CarcassonneGameState(tile_sets=self.tile_sets, supplementary_rules=self.supplementary_rules)
+        self.state = CarcassonneGameState(tile_sets=self.tile_sets,
+                                          supplementary_rules=self.supplementary_rules,
+                                          players=self.players)
 
     def step(self, player: int, action: Action):
         self.state = StateUpdater.apply_action(game_state=self.state, action=action)
