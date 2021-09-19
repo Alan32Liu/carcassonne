@@ -1,5 +1,5 @@
 import random
-from typing import Optional
+from typing import Optional, Tuple, List
 
 from wingedsheep.carcassonne.objects.actions.tile_action import TileAction
 from wingedsheep.carcassonne.objects.coordinate import Coordinate
@@ -12,7 +12,7 @@ from wingedsheep.carcassonne.tile_sets.inns_and_cathedrals_deck import inns_and_
 from wingedsheep.carcassonne.tile_sets.supplementary_rules import SupplementaryRule
 from wingedsheep.carcassonne.tile_sets.the_river_deck import the_river_tiles, the_river_tile_counts
 from wingedsheep.carcassonne.tile_sets.tile_sets import TileSet
-
+from wingedsheep.carcassonne.objects.meeple_position import MeeplePosition
 
 class CarcassonneGameState:
 
@@ -33,7 +33,7 @@ class CarcassonneGameState:
         self.meeples = [7 for _ in range(players)]
         self.abbots = [1 if SupplementaryRule.ABBOTS in supplementary_rules else 0 for _ in range(players)]
         self.big_meeples = [1 if TileSet.INNS_AND_CATHEDRALS in tile_sets else 0 for _ in range(players)]
-        self.placed_meeples = [[] for _ in range(players)]
+        self.placed_meeples: List[List[MeeplePosition]] = [[] for _ in range(players)]
         self.scores: [int] = [0 for _ in range(players)]
         self.current_player = 0
         self.phase = GamePhase.TILES

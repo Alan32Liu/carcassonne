@@ -23,6 +23,15 @@ class MeepleUtil:
                 MeepleUtil.remove_meeple(game_state, meeple_position, player)
 
     @staticmethod
+    def get_meeple_position(game_state: CarcassonneGameState, target_coordinate: CoordinateWithSide) \
+            -> Optional[MeeplePosition]:
+        for player_meeples in game_state.placed_meeples:
+            for meeple in player_meeples:
+                if meeple.coordinate_with_side == target_coordinate:
+                    return meeple
+        return None
+
+    @staticmethod
     def remove_meeple(game_state: CarcassonneGameState, meeple_position: MeeplePosition, player: int):
         game_state.placed_meeples[player].remove(meeple_position)
         if meeple_position.meeple_type == MeepleType.NORMAL or meeple_position.meeple_type == MeepleType.FARMER:

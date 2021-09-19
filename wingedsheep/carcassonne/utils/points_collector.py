@@ -1,5 +1,5 @@
 import json
-from typing import Set
+from typing import Set, List
 
 import numpy as np
 
@@ -66,10 +66,10 @@ class PointsCollector:
                 if tile is None:
                     continue
 
-                coordinate = Coordinate(row=row, column=column)
-                coordinate_with_side = CoordinateWithSide(coordinate=coordinate, side=Side.CENTER)
-                meeple_of_player = MeepleUtil.position_contains_meeple(game_state=game_state,
-                                                                             coordinate_with_side=coordinate_with_side)
+                coordinate: Coordinate = Coordinate(row=row, column=column)
+                coordinate_with_side: CoordinateWithSide = CoordinateWithSide(coordinate=coordinate, side=Side.CENTER)
+                meeple_of_player: int = MeepleUtil.position_contains_meeple(
+                    game_state=game_state, coordinate_with_side=coordinate_with_side)
                 if (tile.chapel or tile.flowers) and meeple_of_player is not None:
                     points = cls.chapel_or_flowers_points(game_state=game_state, coordinate=coordinate)
                     if points == 9:
@@ -77,10 +77,13 @@ class PointsCollector:
                         # print(points, "points for player", meeple_of_player)
                         game_state.scores[meeple_of_player] += points
 
-                        meeples_per_player = []
+                        meeples_per_player: List[List[MeeplePosition]] = []
                         for _ in range(game_state.players):
                             meeples_per_player.append([])
-                        meeples_per_player[meeple_of_player].append(coordinate_with_side)
+                        target_meeple: MeeplePosition = MeepleUtil.get_meeple_position(
+                            game_state=game_state, target_coordinate=coordinate_with_side)
+                        assert target_meeple
+                        meeples_per_player[meeple_of_player].append(target_meeple)
 
                         MeepleUtil.remove_meeples(game_state=game_state, meeples=meeples_per_player)
 
