@@ -21,12 +21,13 @@ class CarcassonneGameState:
             tile_sets: [TileSet] = (TileSet.BASE, TileSet.THE_RIVER, TileSet.INNS_AND_CATHEDRALS),
             supplementary_rules: [SupplementaryRule] = (SupplementaryRule.FARMERS, SupplementaryRule.ABBOTS),
             players: int = 2,
-            board_size: (int, int) = (35, 35),
+            board_size: (int, int) = (13, 31),  # (35, 35),
             starting_position: Coordinate = Coordinate(6, 15)
     ):
         self.deck = self.initialize_deck(tile_sets=tile_sets)
         self.supplementary_rules: [SupplementaryRule] = supplementary_rules
         self.board: [[Tile]] = [[None for column in range(board_size[1])] for row in range(board_size[0])]
+        self.board_size: Tuple[int, int] = board_size
         self.starting_position: Coordinate = starting_position
         self.next_tile = self.deck.pop(0)
         self.players = players
