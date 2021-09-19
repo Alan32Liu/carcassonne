@@ -1,6 +1,6 @@
 import os
 from tkinter import *
-from PIL import ImageTk, Image
+from PIL import ImageTk, Image, ImageDraw
 
 import wingedsheep
 from wingedsheep.carcassonne.carcassonne_game_state import CarcassonneGameState
@@ -102,6 +102,14 @@ class CarcassonneVisualiser:
             image.crop((crop_width, crop_height, crop_width, crop_height))
             player_colour = Image.new("RGBA", (image.width, image.height), color=self.player_colour[player_index])
             image_player: Image = Image.blend(image, player_colour, alpha=0.3)
+
+            coordinate_image = Image.new("RGBA", (image.width, image.height), (255, 255, 255, 0))
+            # get a drawing context
+            drawing_context = ImageDraw.Draw(coordinate_image)
+            # draw text, half opacity
+            drawing_context.text((10, 10), str((row_index, column_index,)), fill=(255, 255, 255, 127))
+
+            image_player = Image.alpha_composite(image_player, coordinate_image)
             photo_image = ImageTk.PhotoImage(image_player)
             self.tile_image_refs[reference] = photo_image
 
