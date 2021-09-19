@@ -1,3 +1,4 @@
+import pdb
 from typing import Set
 
 from wingedsheep.carcassonne.carcassonne_game_state import CarcassonneGameState
@@ -8,20 +9,25 @@ from wingedsheep.carcassonne.objects.meeple_position import MeeplePosition
 from wingedsheep.carcassonne.objects.side import Side
 from wingedsheep.carcassonne.objects.terrain_type import TerrainType
 from wingedsheep.carcassonne.objects.tile import Tile
+from wingedsheep.carcassonne.utils.map_util import MapUtil
 
 
 class CityUtil:
 
     @classmethod
     def find_city(cls, game_state: CarcassonneGameState, city_position: CoordinateWithSide) -> City:
+        def find_open_edges() -> Set[CoordinateWithSide]:
+            return set(noe for noe in map(lambda x: cls.opposite_edge(x), cities)
+                       if MapUtil.within_board(c=noe.coordinate, game_state=game_state))
+
         cities: Set[CoordinateWithSide] = set(cls.cities_for_position(game_state, city_position))
-        open_edges: Set[CoordinateWithSide] = set(map(lambda x: cls.opposite_edge(x), cities))
+        open_edges: Set[CoordinateWithSide] = find_open_edges()
         explored: Set[CoordinateWithSide] = cities.union(open_edges)
         while len(open_edges) > 0:
             open_edge: CoordinateWithSide = open_edges.pop()
             new_cities = cls.cities_for_position(game_state, open_edge)
             cities = cities.union(new_cities)
-            new_open_edges = set(map(lambda x: cls.opposite_edge(x), new_cities))
+            new_open_edges = find_open_edges()
             explored = explored.union(new_cities)
             new_open_edge: CoordinateWithSide
             for new_open_edge in new_open_edges:
