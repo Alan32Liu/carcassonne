@@ -14,3 +14,6 @@ class MeeplePosition:
 
     def __hash__(self):
         return hash((self.meeple_type, self.coordinate_with_side))
+
+    def __str__(self):
+        return f"{self.coordinate_with_side} {self.meeple_type}"
