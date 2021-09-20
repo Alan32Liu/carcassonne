@@ -10,7 +10,7 @@ class TilePositionFinder:
     @staticmethod
     def possible_playing_positions(game_state: CarcassonneGameState, tile_to_play: Tile) -> [PlayingPosition]:
         if game_state.empty_board():
-            return [PlayingPosition(coordinate=game_state.starting_position, turns=0)]
+            return [PlayingPosition(coordinate=game_state.starting_position, turns=i) for i in range(0, 4)]
 
         playing_positions = []
 
