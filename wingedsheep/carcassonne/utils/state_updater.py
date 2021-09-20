@@ -100,6 +100,9 @@ class StateUpdater:
             cls.play_meeple(game_state=new_game_state, meeple_action=action)
         elif isinstance(action, PassAction):
             if game_state.phase == GamePhase.TILES:
+                # TODO: Check why this happened because it should not
+                print("Passing a Tile action")
+                pdb.set_trace()
                 cls.draw_tile(game_state=new_game_state)
                 new_game_state.phase = GamePhase.MEEPLES
             elif game_state.phase == GamePhase.MEEPLES:
