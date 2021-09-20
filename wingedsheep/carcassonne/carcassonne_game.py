@@ -11,14 +11,18 @@ class CarcassonneGame:
 
     def __init__(self,
                  players: int = 2,
+                 board_size: (int, int) = (17, 31),  # (35, 35),
+                 starting_position: (int, int) = (8, 15),
                  tile_sets: [TileSet] = (TileSet.BASE, TileSet.THE_RIVER, TileSet.INNS_AND_CATHEDRALS),
                  supplementary_rules: [SupplementaryRule] = (SupplementaryRule.FARMERS, SupplementaryRule.ABBOTS)):
         self.players = players
         self.tile_sets = tile_sets
         self.supplementary_rules = supplementary_rules
         self.state: CarcassonneGameState = CarcassonneGameState(
-            tile_sets=tile_sets,
             players=players,
+            board_size=board_size,
+            starting_position=starting_position,
+            tile_sets=tile_sets,
             supplementary_rules=supplementary_rules
         )
         self.visualiser = CarcassonneVisualiser()

@@ -21,8 +21,8 @@ class CarcassonneGameState:
             tile_sets: [TileSet] = (TileSet.BASE, TileSet.THE_RIVER, TileSet.INNS_AND_CATHEDRALS),
             supplementary_rules: [SupplementaryRule] = (SupplementaryRule.FARMERS, SupplementaryRule.ABBOTS),
             players: int = 2,
-            board_size: (int, int) = (13, 31),  # (35, 35),
-            starting_position: Coordinate = Coordinate(6, 15)
+            board_size: (int, int) = (17, 31),  # (35, 35),
+            starting_position: (int, int) = (8, 15)
     ):
         self.deck = self.initialize_deck(tile_sets=tile_sets)
         self.supplementary_rules: [SupplementaryRule] = supplementary_rules
