@@ -18,9 +18,10 @@ class RiverRotationUtil:
                 return river_rotation
             else:
                 return game_state.last_river_rotation
+        return Rotation.NONE
 
     @classmethod
-    def get_river_rotation_tile(cls, state: CarcassonneGameState, this_tile_action: TileAction):
+    def get_river_rotation_tile(cls, state: CarcassonneGameState, this_tile_action: TileAction) -> Rotation:
         def get_non_connecting_side() -> Side:
             for side in this_tile_action.tile.get_river_ends():
                 if side == prev_relative_to_this:
@@ -36,7 +37,7 @@ class RiverRotationUtil:
                                            non_connecting_side=get_non_connecting_side())
 
     @classmethod
-    def get_river_rotation_ends(cls, connecting_side: Side, non_connecting_side: Side):
+    def get_river_rotation_ends(cls, connecting_side: Side, non_connecting_side: Side) -> Rotation:
         if SideModificationUtil.turn_side(non_connecting_side, 1) == connecting_side:
             return Rotation.CLOCKWISE
         elif SideModificationUtil.turn_side(non_connecting_side, 3) == connecting_side:
