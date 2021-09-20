@@ -1,13 +1,18 @@
 import copy
+import pdb
+
+from typing import Optional
 
 from wingedsheep.carcassonne.carcassonne_game_state import CarcassonneGameState
 from wingedsheep.carcassonne.objects.actions.action import Action
 from wingedsheep.carcassonne.objects.actions.meeple_action import MeepleAction
 from wingedsheep.carcassonne.objects.actions.pass_action import PassAction
 from wingedsheep.carcassonne.objects.actions.tile_action import TileAction
+from wingedsheep.carcassonne.objects.coordinate import Coordinate
 from wingedsheep.carcassonne.objects.game_phase import GamePhase
 from wingedsheep.carcassonne.objects.meeple_position import MeeplePosition
 from wingedsheep.carcassonne.objects.meeple_type import MeepleType
+from wingedsheep.carcassonne.objects.player import Player
 from wingedsheep.carcassonne.utils.points_collector import PointsCollector
 from wingedsheep.carcassonne.utils.river_rotation_util import RiverRotationUtil
 
@@ -72,12 +77,26 @@ class StateUpdater:
 
     @classmethod
     def apply_action(cls, game_state: CarcassonneGameState, action: Action) -> CarcassonneGameState:
+        def update_board_player(row: int, col: int):
+            new_game_state.board_player[row][col] = Player(game_state.current_player)
+
+        def is_valid_meeple_placement(meeple_coordinate: Coordinate):
+            if new_game_state.board_player[meeple_coordinate.row][meeple_coordinate.column] is None:
+                pdb.set_trace()
+            player_owns_tile: Optional[int] = \
+                new_game_state.board_player[meeple_coordinate.row][meeple_coordinate.column].id()
+            return player_owns_tile == game_state.current_player
+
         new_game_state: CarcassonneGameState = copy.deepcopy(game_state)
 
         if isinstance(action, TileAction):
             cls.play_tile(game_state=new_game_state, tile_action=action)
+            update_board_player(action.coordinate.row, action.coordinate.column)
             new_game_state.phase = GamePhase.MEEPLES
         elif isinstance(action, MeepleAction):
+            if not is_valid_meeple_placement(meeple_coordinate=action.coordinate_with_side.coordinate):
+                pdb.set_trace()
+            assert is_valid_meeple_placement(meeple_coordinate=action.coordinate_with_side.coordinate)
             cls.play_meeple(game_state=new_game_state, meeple_action=action)
         elif isinstance(action, PassAction):
             if game_state.phase == GamePhase.TILES:

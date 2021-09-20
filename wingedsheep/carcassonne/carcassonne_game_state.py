@@ -13,6 +13,8 @@ from wingedsheep.carcassonne.tile_sets.supplementary_rules import SupplementaryR
 from wingedsheep.carcassonne.tile_sets.the_river_deck import the_river_tiles, the_river_tile_counts
 from wingedsheep.carcassonne.tile_sets.tile_sets import TileSet
 from wingedsheep.carcassonne.objects.meeple_position import MeeplePosition
+from wingedsheep.carcassonne.objects.player import Player
+
 
 class CarcassonneGameState:
 
@@ -28,7 +30,9 @@ class CarcassonneGameState:
         self.supplementary_rules: [SupplementaryRule] = supplementary_rules
         self.board: [[Tile]] = [[None for column in range(board_size[1])] for row in range(board_size[0])]
         self.board_size: Tuple[int, int] = board_size
-        self.starting_position: Coordinate = starting_position
+        self.board_player: List[List[Optional[Player]]] = \
+            [[None for _ in range(board_size[1])] for _ in range(board_size[0])]
+        self.starting_position: Coordinate = Coordinate(starting_position[0], starting_position[1])
         self.next_tile = self.deck.pop(0)
         self.players = players
         self.meeples = [7 for _ in range(players)]
