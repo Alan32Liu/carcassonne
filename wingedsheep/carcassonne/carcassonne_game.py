@@ -14,7 +14,8 @@ class CarcassonneGame:
                  board_size: (int, int) = (17, 31),  # (35, 35),
                  starting_position: (int, int) = (8, 15),
                  tile_sets: [TileSet] = (TileSet.BASE, TileSet.THE_RIVER, TileSet.INNS_AND_CATHEDRALS),
-                 supplementary_rules: [SupplementaryRule] = (SupplementaryRule.FARMERS, SupplementaryRule.ABBOTS)):
+                 supplementary_rules: [SupplementaryRule] = (SupplementaryRule.FARMERS, SupplementaryRule.ABBOTS),
+                 visualise_screen: int = 0):
         self.players = players
         self.tile_sets = tile_sets
         self.supplementary_rules = supplementary_rules
@@ -25,12 +26,15 @@ class CarcassonneGame:
             tile_sets=tile_sets,
             supplementary_rules=supplementary_rules
         )
-        self.visualiser = CarcassonneVisualiser()
+        self.visualise_screen = visualise_screen
+        self.visualiser = CarcassonneVisualiser(screen=visualise_screen)
 
     def reset(self):
         self.state = CarcassonneGameState(tile_sets=self.tile_sets,
                                           supplementary_rules=self.supplementary_rules,
                                           players=self.players)
+        self.visualiser.board.destroy()
+        self.visualiser = CarcassonneVisualiser(screen=self.visualise_screen)
 
     def step(self, player: int, action: Action):
         self.state = StateUpdater.apply_action(game_state=self.state, action=action)
