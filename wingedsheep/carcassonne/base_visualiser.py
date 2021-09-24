@@ -1,5 +1,6 @@
 import os
 from tkinter import Toplevel, Canvas
+from typing import Tuple
 from screeninfo import get_monitors, Enumerator, Monitor
 
 import wingedsheep
@@ -54,6 +55,7 @@ class BaseVisualiser:
         self.tile_image_refs = {}
         monitor: Monitor = self.monitors[screen]
         self.board.wm_geometry(f"{monitor.width}x{monitor.height}+{monitor.x}+{monitor.y}")
+        self.tile_xy: Tuple[int, int] = (self.tile_size, self.tile_size)
 
     # def draw_boarder(self, board_size: Tuple[int, int]):
     #     def draw_boarder_cell(r: int, c: int):

@@ -67,17 +67,21 @@ class CarcassonneVisualiser(BaseVisualiser):
             crop_width = max(0, width - height) / 2
             crop_height = max(0, height - width) / 2
             image.crop((crop_width, crop_height, crop_width, crop_height))
-            player_colour = Image.new("RGBA", (image.width, image.height), color=self.player_colour[player_index])
-            image_player: Image = Image.blend(image, player_colour, alpha=0.3)
+            ImageDraw.Draw(image).text(
+                xy=(10, 10),
+                text=str((row_index, column_index,)),
+                fill=(255, 255, 255, 255),
+            )
 
-            coordinate_image = Image.new("RGBA", (image.width, image.height), (255, 255, 255, 0))
-            # get a drawing context
-            drawing_context = ImageDraw.Draw(coordinate_image)
-            # draw text, half opacity
-            drawing_context.text((10, 10), str((row_index, column_index,)), fill=(255, 255, 255, 127))
+            player_colour: Image = Image.new(
+                mode="RGBA",
+                size=self.tile_xy,
+                color=self.player_colour[player_index]
+            )
 
-            image_player = Image.alpha_composite(image_player, coordinate_image)
-            photo_image = ImageTk.PhotoImage(image_player)
+            photo_image = ImageTk.PhotoImage(
+                image=Image.blend(im1=image, im2=player_colour, alpha=0.25)
+            )
             self.tile_image_refs[reference] = photo_image
 
         self.canvas.create_image(
