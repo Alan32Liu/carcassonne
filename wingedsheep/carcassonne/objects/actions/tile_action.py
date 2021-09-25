@@ -16,4 +16,4 @@ class TileAction(Action):
                self.tile_rotations == other.tile_rotations
 
     def __str__(self):
-        return f"Tile   {self.coordinate} {self.tile.description}"
+        return f"Tile {self.coordinate} {self.tile_rotations} {self.tile.description}"
