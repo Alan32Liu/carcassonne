@@ -1,3 +1,4 @@
+from typing import Optional
 from wingedsheep.carcassonne.carcassonne_game_state import CarcassonneGameState
 from wingedsheep.carcassonne.carcassonne_visualiser import CarcassonneVisualiser
 from wingedsheep.carcassonne.objects.actions.action import Action
@@ -15,7 +16,7 @@ class CarcassonneGame:
                  starting_position: (int, int) = (8, 15),
                  tile_sets: [TileSet] = (TileSet.BASE, TileSet.THE_RIVER, TileSet.INNS_AND_CATHEDRALS),
                  supplementary_rules: [SupplementaryRule] = (SupplementaryRule.FARMERS, SupplementaryRule.ABBOTS),
-                 visualise_screen: int = 0):
+                 visualise_screen: Optional[int] = None):
         self.players = players
         self.tile_sets = tile_sets
         self.supplementary_rules = supplementary_rules
@@ -27,14 +28,16 @@ class CarcassonneGame:
             supplementary_rules=supplementary_rules
         )
         self.visualise_screen = visualise_screen
-        self.visualiser = CarcassonneVisualiser(screen=visualise_screen)
+        if visualise_screen is not None:
+            self.visualiser = CarcassonneVisualiser(screen=visualise_screen)
 
     def reset(self):
         self.state = CarcassonneGameState(tile_sets=self.tile_sets,
                                           supplementary_rules=self.supplementary_rules,
                                           players=self.players)
-        self.visualiser.board.destroy()
-        self.visualiser = CarcassonneVisualiser(screen=self.visualise_screen)
+        if self.visualise_screen is not None:
+            self.visualiser.board.destroy()
+            self.visualiser = CarcassonneVisualiser(screen=self.visualise_screen)
 
     def step(self, player: int, action: Action):
         self.state = StateUpdater.apply_action(game_state=self.state, action=action)
