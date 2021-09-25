@@ -5,6 +5,7 @@ from wingedsheep.carcassonne.objects.actions.tile_action import TileAction
 from wingedsheep.carcassonne.objects.playing_position import PlayingPosition
 from wingedsheep.carcassonne.utils.possible_move_finder import PossibleMoveFinder
 from wingedsheep.carcassonne.utils.tile_position_finder import TilePositionFinder
+from wingedsheep.carcassonne.utils.state_updater import StateUpdater
 
 
 class ActionUtil:
@@ -13,13 +14,19 @@ class ActionUtil:
     def get_possible_actions(state: CarcassonneGameState):
         actions: [Action] = []
         if state.phase == GamePhase.TILES:
-            tile_to_play = state.next_tile
             possible_playing_positions: [PlayingPosition] = TilePositionFinder.possible_playing_positions(
                 game_state=state,
-                tile_to_play=tile_to_play
+                tile_to_play=state.next_tile
             )
-            if len(possible_playing_positions) == 0:
-                assert tile_to_play
+            while not possible_playing_positions and not state.is_terminated():
+                StateUpdater.draw_tile(game_state=state)
+                possible_playing_positions: [PlayingPosition] = TilePositionFinder.possible_playing_positions(
+                    game_state=state,
+                    tile_to_play=state.next_tile
+                )
+            if not possible_playing_positions and state.is_terminated():
+                # A very rare case
+                print("WARN: The last tile cannot be placed on the board")
                 actions.append(PassAction())
             else:
                 playing_position: PlayingPosition
