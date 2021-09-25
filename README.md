@@ -49,3 +49,6 @@ Code example for a game with two players
 	    if action is not None:  
 	        game.step(player, action)  
 	    game.render() 
+
+## TODOs
+* [] Optimise the algorithm to find tile position
