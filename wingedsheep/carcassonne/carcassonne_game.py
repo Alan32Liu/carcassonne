@@ -36,8 +36,7 @@ class CarcassonneGame:
                                           supplementary_rules=self.supplementary_rules,
                                           players=self.players)
         if self.visualise_screen is not None:
-            self.visualiser.board.destroy()
-            self.visualiser = CarcassonneVisualiser(screen=self.visualise_screen)
+            self.visualiser.cleanup()
 
     def step(self, player: int, action: Action):
         self.state = StateUpdater.apply_action(game_state=self.state, action=action)

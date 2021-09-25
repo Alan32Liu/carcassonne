@@ -1,6 +1,7 @@
 import os
+from PIL import ImageTk
 from tkinter import Toplevel, Canvas
-from typing import Tuple
+from typing import Tuple, List, Dict
 from screeninfo import get_monitors, Enumerator, Monitor
 
 import wingedsheep
@@ -46,16 +47,25 @@ class BaseVisualiser:
     }
 
     def __init__(self, screen: int):
-        self.monitors = get_monitors(Enumerator.OSX)
-        self.board = Toplevel()
-        self.canvas = Canvas(self.board, width=1920, height=1080, bg='black')
-        self.canvas.pack(fill='both', expand=True)
-        self.images_path = os.path.join(wingedsheep.__path__[0], 'carcassonne', 'resources', 'images')
-        self.meeple_image_refs = {}
-        self.tile_image_refs = {}
-        monitor: Monitor = self.monitors[screen]
-        self.board.wm_geometry(f"{monitor.width}x{monitor.height}+{monitor.x}+{monitor.y}")
+        self.images_path: str = os.path.join(wingedsheep.__path__[0], 'carcassonne', 'resources', 'images')
         self.tile_xy: Tuple[int, int] = (self.tile_size, self.tile_size)
+
+        self.monitors: List[Monitor] = get_monitors(Enumerator.OSX)
+        monitor: Monitor = self.monitors[screen]
+        self.board: Toplevel = Toplevel()
+        self.board.wm_geometry(f"{monitor.width}x{monitor.height}+{monitor.x}+{monitor.y}")
+
+        self.canvas: Canvas = Canvas(self.board, width=1920, height=1080, bg='black')
+        self.canvas.pack(fill='both', expand=True)
+        self.meeple_image_refs: Dict[str, ImageTk] = {}
+        self.tile_image_refs: Dict[str, ImageTk] = {}
+
+    def cleanup(self):
+        self.canvas.destroy()
+        self.canvas: Canvas = Canvas(self.board, width=1920, height=1080, bg='black')
+        self.canvas.pack(fill='both', expand=True)
+        self.meeple_image_refs: Dict[str, ImageTk] = {}
+        self.tile_image_refs: Dict[str, ImageTk] = {}
 
     # def draw_boarder(self, board_size: Tuple[int, int]):
     #     def draw_boarder_cell(r: int, c: int):
