@@ -3,6 +3,7 @@ from wingedsheep.carcassonne.objects.side import Side
 from wingedsheep.carcassonne.objects.coordinate import Coordinate
 from wingedsheep.carcassonne.carcassonne_game_state import CarcassonneGameState
 
+
 class MapUtil:
 
     @staticmethod
