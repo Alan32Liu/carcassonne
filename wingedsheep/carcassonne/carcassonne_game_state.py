@@ -1,5 +1,5 @@
 import random
-from typing import Optional, Tuple, List
+from typing import Optional, Tuple, List, Set
 
 from wingedsheep.carcassonne.objects.actions.tile_action import TileAction
 from wingedsheep.carcassonne.objects.coordinate import Coordinate
@@ -33,6 +33,7 @@ class CarcassonneGameState:
         self.board_player: List[List[Optional[Player]]] = \
             [[None for _ in range(board_size[1])] for _ in range(board_size[0])]
         self.starting_position: Coordinate = Coordinate(starting_position[0], starting_position[1])
+        self.open_coordinates: Set[Coordinate] = {self.starting_position}
         self.next_tile = self.deck.pop(0)
         self.players = players
         self.meeples = [7 for _ in range(players)]

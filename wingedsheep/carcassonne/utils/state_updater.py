@@ -87,11 +87,21 @@ class StateUpdater:
                 new_game_state.board_player[meeple_coordinate.row][meeple_coordinate.column].id()
             return player_owns_tile == game_state.current_player
 
+        def update_open_coordinates(state: CarcassonneGameState, tile_coordinate: Coordinate):
+            # print([f"{coordinate}" for coordinate in state.open_coordinates])
+            state.open_coordinates.remove(tile_coordinate)
+            # print([f"{coordinate}" for coordinate in state.open_coordinates])
+            state.open_coordinates.update(
+                TilePositionFinder.get_open_neighbours(game_state=state, center=tile_coordinate)
+            )
+            # print([f"{coordinate}" for coordinate in state.open_coordinates])
+
         new_game_state: CarcassonneGameState = copy.deepcopy(game_state)
 
         if isinstance(action, TileAction):
             cls.play_tile(game_state=new_game_state, tile_action=action)
             update_board_player(action.coordinate.row, action.coordinate.column)
+            update_open_coordinates(state=new_game_state, tile_coordinate=action.coordinate)
             new_game_state.phase = GamePhase.MEEPLES
         elif isinstance(action, MeepleAction):
             if not is_valid_meeple_placement(meeple_coordinate=action.coordinate_with_side.coordinate):
