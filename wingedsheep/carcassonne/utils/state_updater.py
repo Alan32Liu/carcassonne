@@ -15,6 +15,7 @@ from wingedsheep.carcassonne.objects.meeple_type import MeepleType
 from wingedsheep.carcassonne.objects.player import Player
 from wingedsheep.carcassonne.utils.points_collector import PointsCollector
 from wingedsheep.carcassonne.utils.river_rotation_util import RiverRotationUtil
+from wingedsheep.carcassonne.utils.tile_position_finder import TilePositionFinder
 
 
 class StateUpdater:
@@ -83,6 +84,7 @@ class StateUpdater:
         def is_valid_meeple_placement(meeple_coordinate: Coordinate):
             if new_game_state.board_player[meeple_coordinate.row][meeple_coordinate.column] is None:
                 pdb.set_trace()
+                return False
             player_owns_tile: Optional[int] = \
                 new_game_state.board_player[meeple_coordinate.row][meeple_coordinate.column].id()
             return player_owns_tile == game_state.current_player
@@ -105,6 +107,7 @@ class StateUpdater:
             new_game_state.phase = GamePhase.MEEPLES
         elif isinstance(action, MeepleAction):
             if not is_valid_meeple_placement(meeple_coordinate=action.coordinate_with_side.coordinate):
+                print("ERROR: Invalid Meeple placement")
                 pdb.set_trace()
             assert is_valid_meeple_placement(meeple_coordinate=action.coordinate_with_side.coordinate)
             cls.play_meeple(game_state=new_game_state, meeple_action=action)
